@@ -1,7 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ListTodo, AlertCircle, Clock, CheckCircle } from "lucide-react";
+import {
+  ListTodo,
+  AlertCircle,
+  Clock,
+  CheckCircle,
+  CalendarDays,
+} from "lucide-react";
 import type { FilterType } from "@/types";
 
 interface FilterButtonsProps {
@@ -18,6 +24,7 @@ export const FilterButtons = ({
     { key: "por-hacer" as FilterType, label: "Pendientes", icon: AlertCircle },
     { key: "en-progreso" as FilterType, label: "En Progreso", icon: Clock },
     { key: "hecho" as FilterType, label: "Hecho", icon: CheckCircle },
+    { key: "por-fecha" as FilterType, label: "Por Fecha", icon: CalendarDays },
   ];
 
   return (
@@ -33,12 +40,12 @@ export const FilterButtons = ({
             }
           }}
           className={`
-            flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
-            transition-all duration-200 relative overflow-hidden
+            flex items-center gap-2 p-2 rounded-lg text-sm font-medium
+            transition-all duration-200 relative overflow-hidden border border-muted-foreground/50
             ${
               activeFilter === filter.key
-                ? "bg-blue-600 text-white shadow-lg"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
             }
           `}
           whileHover={{ scale: 1.02 }}

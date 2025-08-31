@@ -123,14 +123,24 @@ export const TaskForm = ({ onSubmit }: TaskFormProps) => {
     <>
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="w-full mb-6 p-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl
-                   flex items-center justify-center gap-2 font-medium shadow-lg
-                   transition-colors duration-200"
+        className="w-full mb-4 p-2.5 rounded-xl
+             bg-gradient-to-r from-indigo-600 to-cyan-500
+             text-white font-medium shadow-lg
+             flex items-center justify-center gap-2
+             transition-all duration-200
+             group"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        <Plus className="w-5 h-5" />
-        Agregar Nueva Tarea
+        <motion.div
+          className="flex items-center gap-2"
+          initial={{ x: -5 }}
+          animate={{ x: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          <Plus className="w-5 h-5 transition-transform duration-300 group-hover:rotate-90" />
+          <span>Agregar Nueva Tarea</span>
+        </motion.div>
       </motion.button>
 
       <AnimatePresence>

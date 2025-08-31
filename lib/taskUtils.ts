@@ -2,6 +2,11 @@ import type { Task, TaskCategory, FilterType } from "@/types";
 
 export const filterTasks = (tasks: Task[], filter: FilterType): Task[] => {
   if (filter === "todas") return tasks;
+  if (filter === "por-fecha") {
+    return [...tasks].sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
+  }
   return tasks.filter((task) => task.category === filter);
 };
 

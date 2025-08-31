@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Briefcase } from "lucide-react";
+import { Briefcase, ListTodo, StickyNote, LayoutList } from "lucide-react";
 import { useTasks } from "@/hooks/useTasks";
 import { useTheme } from "@/hooks/useTheme";
 import { filterTasks } from "@/lib/taskUtils";
@@ -26,6 +26,7 @@ export default function Home() {
   } = useTasks();
   const { theme, isLoading: themeLoading } = useTheme();
   const [activeFilter, setActiveFilter] = useState<FilterType>("todas");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   if (isLoading || themeLoading) {
     return (
@@ -43,12 +44,12 @@ export default function Home() {
   const stats = getTaskStats();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 
-                     bg-blue-600 text-white px-4 py-2 rounded-lg z-50"
+                       bg-blue-600 text-white px-4 py-2 rounded-lg z-50"
         >
           Saltar al contenido principal
         </a>
@@ -57,12 +58,12 @@ export default function Home() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center justify-between mb-8"
+          className="flex items-center justify-between mb-7"
           role="banner"
         >
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-indigo-600 rounded-xl shadow-lg">
-              <Briefcase className="w-6 h-6 text-white" aria-hidden="true" />
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 bg-indigo-600 rounded-xl shadow-lg">
+              <ListTodo className="w-9 h-9 text-white" aria-hidden="true" />
             </div>
             <div>
               <h1
@@ -117,13 +118,39 @@ export default function Home() {
                       : "Completadas"
                   }`}
             </h2>
-            <span
-              className="text-sm text-gray-500 dark:text-gray-400"
-              aria-live="polite"
-            >
-              {filteredTasks.length}{" "}
-              {filteredTasks.length === 1 ? "tarea" : "tareas"}
-            </span>
+            <div className="flex items-center gap-4">
+              <span
+                className="text-sm text-gray-500 dark:text-gray-400"
+                aria-live="polite"
+              >
+                {filteredTasks.length}{" "}
+                {filteredTasks.length === 1 ? "tarea" : "tareas"}
+              </span>
+              <div className="flex items-center rounded-lg border border-slate-200 dark:border-slate-700 p-1 gap-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-1 rounded-md transition-colors ${
+                    viewMode === "grid"
+                      ? "bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200"
+                      : "text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  }`}
+                  aria-label="Cambiar a vista de tarjeta"
+                >
+                  <StickyNote className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-1 rounded-md transition-colors ${
+                    viewMode === "list"
+                      ? "bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200"
+                      : "text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  }`}
+                  aria-label="Cambiar a vista de lista"
+                >
+                  <LayoutList className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           </div>
 
           <TaskList
@@ -131,6 +158,7 @@ export default function Home() {
             onDeleteTask={deleteTask}
             onUpdateCategory={updateTaskCategory}
             onUpdateTask={updateTask}
+            viewMode={viewMode}
           />
         </motion.main>
 
@@ -141,9 +169,7 @@ export default function Home() {
           className="mt-16 text-center text-muted-foreground text-sm"
           role="contentinfo"
         >
-          <p>
-            © 2025 Gestión Tareas Universidad Continental. Desarrollado con ❤️
-          </p>
+          <p>© 2025 Gestión Tareas Universidad Continental</p>
         </motion.footer>
       </div>
     </div>

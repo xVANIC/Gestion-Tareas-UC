@@ -25,4 +25,4 @@ export interface TaskStats {
   completionRate: number;
 }
 
-export type FilterType = "todas" | TaskCategory;
+export type FilterType = "todas" | TaskCategory | "por-fecha";

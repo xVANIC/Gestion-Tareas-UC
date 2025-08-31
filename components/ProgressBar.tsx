@@ -11,7 +11,7 @@ export const ProgressBar = ({ progress }: ProgressBarProps) => {
     <section className="mb-8" aria-labelledby="progress-heading">
       <div className="flex justify-between items-center mb-2">
         <h3 id="progress-heading" className="text-sm font-medium text-primary">
-          Progreso General de Tareas
+          Progreso General De Las Tareas
         </h3>
         <span className="text-sm font-semibold text-primary">{progress}%</span>
       </div>

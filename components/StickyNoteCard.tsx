@@ -16,21 +16,19 @@ import { useState } from "react";
 import type { Task, TaskCategory } from "@/types";
 import { getCategoryLabel, formatDate, isTaskOverdue } from "@/lib/taskUtils";
 
-interface TaskCardProps {
+interface StickyNoteCardProps {
   task: Task;
   onDelete: (id: string) => void;
   onEdit: (task: Task) => void;
   onUpdateCategory: (id: string, category: TaskCategory) => void;
-  viewMode: "grid" | "list";
 }
 
-export const TaskCard = ({
+export const StickyNoteCard = ({
   task,
   onDelete,
   onEdit,
   onUpdateCategory,
-  viewMode,
-}: TaskCardProps) => {
+}: StickyNoteCardProps) => {
   const [showMenu, setShowMenu] = useState(false);
   const isOverdue = isTaskOverdue(task);
   const isCompleted = task.category === "hecho";
@@ -54,25 +52,25 @@ export const TaskCard = ({
       case "hecho":
         return {
           icon: CheckCircle2,
-          color: "text-emerald-600 dark:text-emerald-400",
-          bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
-          borderColor: "border-emerald-200 dark:border-emerald-800",
+          color: "text-emerald-500",
+          bgColor: "bg-emerald-100 dark:bg-emerald-900/50",
+          borderColor: "border-emerald-300 dark:border-emerald-700",
           accentColor: "bg-emerald-500",
         };
       case "en-progreso":
         return {
           icon: Clock,
-          color: "text-yellow-600 dark:text-yellow-400",
-          bgColor: "bg-yellow-50 dark:bg-yellow-950/30",
-          borderColor: "border-yellow-200 dark:border-yellow-800",
-          accentColor: "bg-yellow-500",
+          color: "text-amber-500",
+          bgColor: "bg-amber-100 dark:bg-amber-900/50",
+          borderColor: "border-amber-300 dark:border-amber-700",
+          accentColor: "bg-amber-500",
         };
       default:
         return {
           icon: Circle,
-          color: "text-slate-500 dark:text-slate-400",
-          bgColor: "bg-slate-50 dark:bg-slate-950/30",
-          borderColor: "border-slate-200 dark:border-slate-700",
+          color: "text-slate-400 dark:text-slate-500",
+          bgColor: "bg-slate-100 dark:bg-slate-700/50",
+          borderColor: "border-slate-300 dark:border-slate-600",
           accentColor: "bg-slate-400",
         };
     }
@@ -81,51 +79,6 @@ export const TaskCard = ({
   const statusConfig = getStatusConfig();
   const StatusIcon = statusConfig.icon;
 
-  const cardClasses =
-    viewMode === "grid"
-      ? `
-      relative group bg-white dark:bg-slate-800/50 backdrop-blur-sm
-      border ${statusConfig.borderColor} rounded-2xl aspect-square
-      hover:shadow-xl hover:shadow-slate-200/20 dark:hover:shadow-slate-900/40
-      transition-all duration-300 ease-out
-      ${isCompleted ? "opacity-80" : ""}
-      ${
-        isOverdue && !isCompleted
-          ? "ring-2 ring-red-200 dark:ring-red-800/50"
-          : ""
-      }
-    `
-      : `
-      relative group bg-white dark:bg-slate-800/50 backdrop-blur-sm
-      border ${statusConfig.borderColor} rounded-xl
-      hover:shadow-lg hover:shadow-slate-200/20 dark:hover:shadow-slate-900/40
-      transition-all duration-300 ease-out
-      ${isCompleted ? "opacity-80" : ""}
-      ${
-        isOverdue && !isCompleted
-          ? "ring-2 ring-red-200 dark:ring-red-800/50"
-          : ""
-      }
-      flex items-center p-4 h-24
-    `;
-  const contentClasses =
-    viewMode === "grid"
-      ? "p-6 flex flex-col h-[calc(100%-0.25rem)]"
-      : "flex-1 flex items-center gap-4 min-w-0";
-
-  const titleClasses =
-    viewMode === "grid"
-      ? `text-lg font-semibold leading-tight ${
-          isCompleted
-            ? "text-slate-500 dark:text-slate-400 line-through"
-            : "text-slate-900 dark:text-slate-100"
-        }`
-      : `text-base font-semibold truncate ${
-          isCompleted
-            ? "text-slate-500 dark:text-slate-400 line-through"
-            : "text-slate-900 dark:text-slate-100"
-        }`;
-
   return (
     <motion.article
       layout
@@ -133,16 +86,25 @@ export const TaskCard = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className={`relative ${cardClasses}`}
+      className={`
+        relative group bg-white dark:bg-slate-800/50 backdrop-blur-sm
+        border ${statusConfig.borderColor} rounded-b-3xl aspect-square
+        hover:shadow-md hover:shadow-slate-200 dark:hover:shadow-slate-900
+        transition-all duration-300 ease-out
+        ${isCompleted ? "opacity-80" : ""}
+        ${
+          isOverdue && !isCompleted
+            ? "ring-2 ring-red-200 dark:ring-red-800/50"
+            : ""
+        }
+      `}
       role="article"
       aria-label={`Tarea: ${task.title}`}
     >
-      {viewMode === "grid" && (
-        <div className={`h-1 ${statusConfig.accentColor}`} />
-      )}
+      <div className={`h-1 ${statusConfig.accentColor}`} />
 
-      <div className={contentClasses}>
-        <div className="flex items-center gap-2">
+      <div className="p-6 flex flex-col h-[calc(100%-0.25rem)]">
+        <div className="flex items-start gap-3">
           <motion.button
             onClick={() => {
               const nextCategory =
@@ -165,7 +127,7 @@ export const TaskCard = ({
               })
             }
             className={`
-              flex-shrink-0 w-10 h-10 rounded-xl ${statusConfig.bgColor}
+              flex-shrink-0 w-8 h-8 rounded-lg ${statusConfig.bgColor}
               flex items-center justify-center transition-all duration-200
               hover:scale-110 focus:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 
               ${statusConfig.color}
@@ -180,18 +142,15 @@ export const TaskCard = ({
           </motion.button>
 
           <div className="flex-1 min-w-0">
-            <h3 className={titleClasses}>{task.title}</h3>
-            {viewMode === "list" && (
-              <p
-                className={`text-sm leading-tight truncate ${
-                  isCompleted
-                    ? "text-slate-400 dark:text-slate-500 line-through"
-                    : "text-slate-600 dark:text-slate-400"
-                }`}
-              >
-                {task.description || "Sin descripción"}
-              </p>
-            )}
+            <h3
+              className={`text-base font-semibold leading-tight ${
+                isCompleted
+                  ? "text-slate-500 dark:text-slate-400 line-through"
+                  : "text-slate-900 dark:text-slate-100"
+              }`}
+            >
+              {task.title}
+            </h3>
           </div>
 
           <div className="relative ml-2">
@@ -216,7 +175,7 @@ export const TaskCard = ({
                 exit={{ opacity: 0, scale: 0.95, y: -10 }}
                 className="absolute right-0 top-full mt-2 w-40 bg-white dark:bg-slate-800
                              border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl
-                             py-1.5 z-10 text-center"
+                             py-1.5 z-50 text-center"
                 role="menu"
                 aria-label="Menú de acciones de tarea"
               >
@@ -302,76 +261,73 @@ export const TaskCard = ({
             )}
           </div>
         </div>
-        {viewMode === "grid" && (
-          <div className="flex-1 overflow-y-auto mt-4 mb-4 border-t border-slate-100 dark:border-slate-700/50 pt-4">
-            {task.description ? (
-              <p
+
+        <div className="flex-1 overflow-y-auto mt-4 mb-4 border-t border-slate-200 dark:border-slate-700/50 pt-4">
+          {task.description ? (
+            <p
+              className={`
+                text-sm leading-relaxed
+                ${
+                  isCompleted
+                    ? "text-slate-400 dark:text-slate-500"
+                    : "text-slate-600 dark:text-slate-400"
+                }
+              `}
+            >
+              {task.description}
+            </p>
+          ) : (
+            <div className="h-full flex items-center justify-center text-slate-300 dark:text-slate-600 text-sm italic">
+              Sin descripción
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-3 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 items-center">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span
+              className={`
+                inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium
+                ${statusConfig.bgColor} ${statusConfig.color}
+                border ${statusConfig.borderColor}
+              `}
+            >
+              {getCategoryLabel(task.category)}
+            </span>
+
+            {task.dueDate && (
+              <div
                 className={`
-                  text-sm leading-relaxed
+                  flex items-center gap-1.5 text-xs
                   ${
-                    isCompleted
-                      ? "text-slate-400 dark:text-slate-500"
-                      : "text-slate-600 dark:text-slate-400"
+                    isOverdue && !isCompleted
+                      ? "text-red-600 dark:text-red-400 font-medium"
+                      : "text-slate-500 dark:text-slate-400"
                   }
                 `}
               >
-                {task.description}
-              </p>
-            ) : (
-              <div className="h-full flex items-center justify-center text-slate-300 dark:text-slate-600 text-sm italic">
-                Sin descripción
+                <Calendar className="w-3.5 h-3.5" />
+                <span>{formatDate(task.dueDate)}</span>
+                {isOverdue && !isCompleted && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="flex items-center gap-1 ml-1 px-2 py-0.5 bg-red-100 dark:bg-red-900/30 
+                               text-red-700 dark:text-red-300 rounded-full"
+                  >
+                    <AlertTriangle className="w-3 h-3" />
+                    <span className="text-xs font-medium">Vencida</span>
+                  </motion.div>
+                )}
               </div>
             )}
           </div>
-        )}
 
-        {viewMode === "grid" && (
-          <div className="flex flex-col gap-3 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span
-                className={`
-                  inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium
-                  ${statusConfig.bgColor} ${statusConfig.color}
-                  border ${statusConfig.borderColor}
-                `}
-              >
-                {getCategoryLabel(task.category)}
-              </span>
-
-              {task.dueDate && (
-                <div
-                  className={`
-                    flex items-center gap-1.5 text-xs
-                    ${
-                      isOverdue && !isCompleted
-                        ? "text-red-600 dark:text-red-400 font-medium"
-                        : "text-slate-500 dark:text-slate-400"
-                    }
-                  `}
-                >
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>{formatDate(task.dueDate)}</span>
-                  {isOverdue && !isCompleted && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="flex items-center gap-1 ml-1 px-2 py-0.5 bg-red-100 dark:bg-red-900/30 
-                                 text-red-700 dark:text-red-300 rounded-full"
-                    >
-                      <AlertTriangle className="w-3 h-3" />
-                      <span className="text-xs font-medium">Vencida</span>
-                    </motion.div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              <span className="truncate">{formatDate(task.createdAt)}</span>
-            </div>
+          <div className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            <span className="truncate">{formatDate(task.createdAt)}</span>
           </div>
-        )}
+        </div>
       </div>
 
       {isCompleted && (
@@ -379,7 +335,7 @@ export const TaskCard = ({
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
           className="absolute -top-3 -right-3 w-9 h-9 bg-emerald-500 rounded-full
-                 flex items-center justify-center shadow-lg z-20"
+                     flex items-center justify-center shadow-lg z-20"
         >
           <CheckCircle className="w-6 h-6 text-white" />
         </motion.div>

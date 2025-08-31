@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { TaskCard } from "./TaskCard";
+import { StickyNoteCard } from "./StickyNoteCard";
+import { ListCard } from "./ListCard";
 import { TaskDialog } from "./TaskDialog";
 import type { Task, TaskCategory } from "@/types";
 import { useState } from "react";
@@ -11,6 +12,7 @@ interface TaskListProps {
   onDeleteTask: (id: string) => void;
   onUpdateCategory: (id: string, category: TaskCategory) => void;
   onUpdateTask: (id: string, task: Partial<Task>) => void;
+  viewMode: "grid" | "list";
 }
 
 export const TaskList = ({
@@ -18,6 +20,7 @@ export const TaskList = ({
   onDeleteTask,
   onUpdateCategory,
   onUpdateTask,
+  viewMode,
 }: TaskListProps) => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
@@ -41,23 +44,21 @@ export const TaskList = ({
         aria-live="polite"
       >
         <div
-          className="w-24 h-24 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full 
+          className="w-24 h-24 mx-auto mb-4 bg-gray-50 dark:bg-gray-800 rounded-full 
                         flex items-center justify-center"
         >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="text-gray-400 dark:text-gray-500"
+          <span
+            className="text-4xl text-gray-400 dark:text-gray-500"
             aria-hidden="true"
           >
-            📝
-          </motion.div>
+            🚀
+          </span>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-          No hay tareas
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+          ¡Hora de empezar!
         </h3>
         <p className="text-gray-500 dark:text-gray-400">
-          ¡Comienza agregando tu primera tarea!
+          Crea tu primera tarea para organizar tu día y ser más productivo.
         </p>
       </motion.div>
     );
@@ -66,20 +67,29 @@ export const TaskList = ({
   return (
     <>
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        className={`gap-4 ${
+          viewMode === "grid"
+            ? "grid grid-cols-1 md:grid-cols-2"
+            : "flex flex-col"
+        }`}
         role="list"
         aria-label="Lista de tareas"
       >
         <AnimatePresence mode="popLayout">
-          {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onDelete={onDeleteTask}
-              onEdit={handleEditTask}
-              onUpdateCategory={onUpdateCategory}
-            />
-          ))}
+          {tasks.map((task) => {
+            const cardProps = {
+              task,
+              onDelete: onDeleteTask,
+              onEdit: handleEditTask,
+              onUpdateCategory: onUpdateCategory,
+            };
+
+            if (viewMode === "grid") {
+              return <StickyNoteCard key={task.id} {...cardProps} />;
+            } else {
+              return <ListCard key={task.id} {...cardProps} />;
+            }
+          })}
         </AnimatePresence>
       </div>
 

@@ -14,15 +14,15 @@ export const Statistics = ({ stats }: StatisticsProps) => {
       label: "Total",
       value: stats.total,
       icon: BarChart3,
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
+      color: "text-indigo-600 dark:text-indigo-400",
+      bgColor: "bg-indigo-50 dark:bg-indigo-900/20",
     },
     {
       label: "Pendientes",
       value: stats.porHacer,
       icon: AlertCircle,
-      color: "text-orange-600 dark:text-orange-400",
-      bgColor: "bg-orange-50 dark:bg-orange-900/20",
+      color: "text-slate-600 dark:text-slate-400",
+      bgColor: "bg-slate-50 dark:bg-slate-900/20",
     },
     {
       label: "En Progreso",
@@ -35,14 +35,14 @@ export const Statistics = ({ stats }: StatisticsProps) => {
       label: "Completadas",
       value: stats.hecho,
       icon: CheckCircle,
-      color: "text-green-600 dark:text-green-400",
-      bgColor: "bg-green-50 dark:bg-green-900/20",
+      color: "text-emerald-600 dark:text-emerald-400",
+      bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
     },
   ];
 
   return (
     <section
-      className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8"
+      className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6"
       aria-labelledby="statistics-heading"
     >
       <h2 id="statistics-heading" className="sr-only">
