@@ -2,13 +2,16 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 
+// Configuración de la fuente
 const inter = Inter({ subsets: ["latin"] });
 
+// Configuración de la vista
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
 };
 
+// Metadatos de la página
 export const metadata: Metadata = {
   title: "Gestión Tareas UC",
   description:
@@ -17,6 +20,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Herrada Cedron Angel Fabian" }],
 };
 
+// Componente de diseño principal
 export default function RootLayout({
   children,
 }: {

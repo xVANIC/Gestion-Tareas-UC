@@ -1,5 +1,8 @@
+// Lógica de filtrado y utilidades para las tareas
+
 import type { Task, TaskCategory, FilterType } from "@/types";
 
+// Filtro para ordenar las tareas
 export const filterTasks = (tasks: Task[], filter: FilterType): Task[] => {
   if (filter === "todas") return tasks;
   if (filter === "por-fecha") {
@@ -10,6 +13,7 @@ export const filterTasks = (tasks: Task[], filter: FilterType): Task[] => {
   return tasks.filter((task) => task.category === filter);
 };
 
+// Conversión de categoría a texto legible
 export const getCategoryLabel = (category: TaskCategory): string => {
   const labels = {
     "por-hacer": "Por Hacer",
@@ -19,6 +23,7 @@ export const getCategoryLabel = (category: TaskCategory): string => {
   return labels[category];
 };
 
+// Clases de color para la categoría
 export const getCategoryColor = (category: TaskCategory): string => {
   const colors = {
     "por-hacer":
@@ -30,6 +35,7 @@ export const getCategoryColor = (category: TaskCategory): string => {
   return colors[category];
 };
 
+// Formato de fecha
 export const formatDate = (date: Date): string => {
   return new Intl.DateTimeFormat("es-ES", {
     day: "2-digit",
@@ -38,6 +44,7 @@ export const formatDate = (date: Date): string => {
   }).format(date);
 };
 
+// Verificación de fecha de vencimiento
 export const isTaskOverdue = (task: Task): boolean => {
   if (!task.dueDate || task.category === "hecho") return false;
   return new Date() > task.dueDate;

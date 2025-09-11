@@ -1,8 +1,9 @@
 "use client";
 
+// Importaciones de React, bibliotecas de terceros y componentes propios
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Briefcase, ListTodo, StickyNote, LayoutList } from "lucide-react";
+import { ListTodo, StickyNote, LayoutList } from "lucide-react";
 import { useTasks } from "@/hooks/useTasks";
 import { useTheme } from "@/hooks/useTheme";
 import { filterTasks } from "@/lib/taskUtils";
@@ -28,6 +29,7 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState<FilterType>("todas");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
+  // Manejo de carga de la página
   if (isLoading || themeLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -40,9 +42,11 @@ export default function Home() {
     );
   }
 
+  // Lógica de filtrado y estadísticas
   const filteredTasks = filterTasks(tasks, activeFilter);
   const stats = getTaskStats();
 
+  // Renderizado de la interfaz
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -54,6 +58,7 @@ export default function Home() {
           Saltar al contenido principal
         </a>
 
+        {/* Encabezado de la aplicación */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,10 +83,11 @@ export default function Home() {
           <ThemeToggle />
         </motion.div>
 
+        {/* Sección de Estadisticas y Barra de Progresión */}
         <Statistics stats={stats} />
-
         <ProgressBar progress={stats.completionRate} />
 
+        {/* Sección de agregar tareas */}
         <section aria-labelledby="add-task-section">
           <h2 id="add-task-section" className="sr-only">
             Crear Nueva Tarea
@@ -89,11 +95,13 @@ export default function Home() {
           <TaskForm onSubmit={addTask} />
         </section>
 
+        {/* Botones de filtros */}
         <FilterButtons
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
         />
 
+        {/* Contenido principal */}
         <motion.main
           id="main-content"
           role="main"
@@ -153,6 +161,7 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Lista de tareas */}
           <TaskList
             tasks={filteredTasks}
             onDeleteTask={deleteTask}
@@ -162,6 +171,7 @@ export default function Home() {
           />
         </motion.main>
 
+        {/* Pie de página */}
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
