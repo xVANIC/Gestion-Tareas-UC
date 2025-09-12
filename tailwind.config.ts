@@ -88,3 +88,14 @@ const config: Config = {
   plugins: [require('tailwindcss-animate')],
 };
 export default config;
+/**
+ * Configuración personalizada de Tailwind CSS para el proyecto Gestion-Tareas-UC.
+ *
+ * - Activa el modo oscuro por clase.
+ * - Define los archivos donde se aplican las utilidades de Tailwind.
+ * - Extiende el tema con gradientes, radios de borde y una paleta de colores basada en variables CSS.
+ * - Incluye animaciones personalizadas para acordeones.
+ * - Agrega el plugin tailwindcss-animate para animaciones adicionales.
+ *
+ * Esta configuración permite estilos consistentes, soporte para modo oscuro y personalización avanzada usando variables CSS.
+ */
