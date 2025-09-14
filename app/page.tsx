@@ -29,7 +29,7 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState<FilterType>("todas");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  // Manejo de carga de la página
+  // Manejo de carga de la página-agilizando la experiencia del usuario.
   if (isLoading || themeLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -42,11 +42,11 @@ export default function Home() {
     );
   }
 
-  // Lógica de filtrado y estadísticas
+  // Lógica de filtrado y estadísticas de tareas
   const filteredTasks = filterTasks(tasks, activeFilter);
   const stats = getTaskStats();
 
-  // Renderizado de la interfaz
+  // Renderizado de la interfaz principal
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -171,7 +171,7 @@ export default function Home() {
           />
         </motion.main>
 
-        {/* Pie de página */}
+        {/* Pie de página en la aplicacion-desarrollado por alumno ALFREDOM */}
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
