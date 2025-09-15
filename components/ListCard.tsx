@@ -8,8 +8,6 @@ import {
   CheckCircle2,
   Circle,
   MoreVertical,
-  AlertTriangle,
-  CheckCircle,
   Pencil,
 } from "lucide-react";
 import { useState } from "react";
